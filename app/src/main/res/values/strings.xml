@@ -5,4 +5,14 @@
     <string name="usernameET">Nombre del usuario del entrenador Pokemon</string>
     <string name="usernameETHint">Username</string>
     <string name="titleMain">POKEDEX</string>
+    <string name="catchBtn">Atrapar</string>
+    <string name="catchETHint">Atrapa un pokemon</string>
+    <string name="searchETHint">Buscar</string>
+    <string name="dropBtn">Soltar</string>
+    <string name="defenseTV">Defensa</string>
+    <string name="attackTV">Ataque</string>
+    <string name="speedTV">Velocidad</string>
+    <string name="lifeTV">Vida</string>
+    <string name="myPokemonsTV">Mis pokemon</string>
+
 </resources>
