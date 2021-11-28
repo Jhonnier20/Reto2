@@ -46,11 +46,6 @@ public class PokemonDataActivity extends AppCompatActivity {
 
         dropBtn = binding.dropBtn;
         pokImg = binding.pokImg;
-        new Thread(
-                ()->{
-                    setImage();
-                }
-        ).start();
         nameTV = binding.nameTV;
         typeTV = binding.typeTV;
         defenseTV = binding.defenseTV;
@@ -64,7 +59,7 @@ public class PokemonDataActivity extends AppCompatActivity {
         loadData();
 
         dropBtn.setOnClickListener( v -> {
-            FirebaseFirestore.getInstance().collection("users").document(trainer.getId()).collection("pokemones").document(pokemon.getId()).delete();
+            FirebaseFirestore.getInstance().collection("trainers").document(trainer.getId()).collection("pokemons").document(pokemon.getId()).delete();
             finish();
         });
 
@@ -78,9 +73,15 @@ public class PokemonDataActivity extends AppCompatActivity {
         attackTV.setText(""+pokemon.getAttack());
         speedTV.setText(""+pokemon.getSpeed());
         lifeTV.setText(""+pokemon.getLife());
+        new Thread(
+                ()->{
+                    setImage();
+                }
+        ).start();
     }
 
     private void setImage() {
+
         try {
             URL imageUrl = new URL(pokemon.getPhoto());
             HttpURLConnection conn = (HttpURLConnection) imageUrl.openConnection();
