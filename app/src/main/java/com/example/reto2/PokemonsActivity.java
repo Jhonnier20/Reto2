@@ -69,8 +69,9 @@ public class PokemonsActivity extends AppCompatActivity implements PokemonAdapte
 
     private void searchPokRecycler(View view) {
         String namePoke = searchET.getText().toString();
+        searchET.setText("");
         String userID = trainer.getId();
-        FirebaseFirestore.getInstance().collection("trainers").document(userID).collection("pokemons").whereEqualTo("name", namePoke).get().addOnCompleteListener(
+        FirebaseFirestore.getInstance().collection("trainers").document(userID).collection("pokemons").whereEqualTo("name", namePoke.toLowerCase()).get().addOnCompleteListener(
                 task -> {
                     if (task.getResult().size() == 0) {
                         runOnUiThread(
@@ -79,15 +80,15 @@ public class PokemonsActivity extends AppCompatActivity implements PokemonAdapte
                                 }
                         );
                     } else {
-                        runOnUiThread(
-                                () -> {
-                                    adapter.deletePokemon();
-                                }
-                        );
+                        Pokemon pokemon = null;
                         for (DocumentSnapshot doc : task.getResult()) {
-                            Pokemon pokemon = doc.toObject(Pokemon.class);
-                            adapter.addPokemon(pokemon);
+                            pokemon = doc.toObject(Pokemon.class);
+                            break;
                         }
+                        Intent intent = new Intent(this, PokemonDataActivity.class);
+                        intent.putExtra("pokemon", pokemon);
+                        intent.putExtra("trainer", trainer);
+                        startActivity(intent);
                     }
                 }
         );
@@ -106,48 +107,40 @@ public class PokemonsActivity extends AppCompatActivity implements PokemonAdapte
         );
     }
     private void searchPokApi(View view) {
-        /**Pokemon pokemon = new Pokemon(
-                UUID.randomUUID().toString(),
-                "Picachu",
-                "poke",
-                "",
-                new Date().getTime(),
-                10,
-                10,
-                10,
-                10
-        );
-        Log.e(">>>", pokemon.toString());
-        adapter.addPokemon(pokemon);*/
         String name = catchET.getText().toString();
         catchET.setText("");
-        new Thread(
-                () -> {
-                    HTTPSWebUtilDomi httpsWebUtilDomi = new HTTPSWebUtilDomi();
-                    String json = httpsWebUtilDomi.GETrequest("https://pokeapi.co/api/v2/pokemon/" + name);
-                    if (json.isEmpty() == false) {
-                        Gson gson = new Gson();
-                        ApiPokemon pokemonApi = gson.fromJson(json, ApiPokemon.class);
-                        String type = pokemonApi.getTypes()[0].getType().getName();
-                        int defense = pokemonApi.getStats()[2].getBase_stat();
-                        int attack = pokemonApi.getStats()[1].getBase_stat();
-                        int velocity = pokemonApi.getStats()[5].getBase_stat();
-                        int life = pokemonApi.getStats()[0].getBase_stat();
-                        String img = pokemonApi.getSprites().getFront_default();
+        if(name == null || name.equals("")) {
+            Toast.makeText(this, "No ha ingresado ningun pokemon!", Toast.LENGTH_LONG).show();
+        } else {
 
-                            Pokemon pokem = new Pokemon(UUID.randomUUID().toString(), pokemonApi.getName(), type, img,  new Date().getTime(), attack, defense, velocity, life);
-                        addPokemon(pokem);
-                    } else {
-                        runOnUiThread(
-                                () -> {
-                                    Toast.makeText(this, "El pokemon: " + name + " no existe", Toast.LENGTH_LONG).show();
-                                }
-                        );
+            new Thread(
+                    () -> {
+                        HTTPSWebUtilDomi httpsWebUtilDomi = new HTTPSWebUtilDomi();
+                        String json = httpsWebUtilDomi.GETrequest("https://pokeapi.co/api/v2/pokemon/" + name.toLowerCase());
+                        if (json.isEmpty() == false) {
+                            Gson gson = new Gson();
+                            ApiPokemon pokemonApi = gson.fromJson(json, ApiPokemon.class);
+                            String type = pokemonApi.getTypes()[0].getType().getName();
+                            int defense = pokemonApi.getStats()[2].getBase_stat();
+                            int attack = pokemonApi.getStats()[1].getBase_stat();
+                            int velocity = pokemonApi.getStats()[5].getBase_stat();
+                            int life = pokemonApi.getStats()[0].getBase_stat();
+                            String img = pokemonApi.getSprites().getFront_default();
+
+                            Pokemon pokem = new Pokemon(UUID.randomUUID().toString(), pokemonApi.getName(), type, img, new Date().getTime(), attack, defense, velocity, life);
+                            addPokemon(pokem);
+                        } else {
+                            runOnUiThread(
+                                    () -> {
+                                        Toast.makeText(this, "El pokemon: " + name + " no existe", Toast.LENGTH_LONG).show();
+                                    }
+                            );
+
+                        }
 
                     }
-
-                }
-        ).start();
+            ).start();
+        }
     }
     public void addPokemon(Pokemon pokemon) {
         FirebaseFirestore.getInstance().collection("trainers").document(trainer.getId()).collection("pokemons").document(pokemon.getId()).set(pokemon);
@@ -173,5 +166,12 @@ public class PokemonsActivity extends AppCompatActivity implements PokemonAdapte
                     imgRow.setImageBitmap(img);
                 }
         );
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        adapter.deletePokemon();
+        chargePokemons();
     }
 }

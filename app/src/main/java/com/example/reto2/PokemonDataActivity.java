@@ -68,7 +68,7 @@ public class PokemonDataActivity extends AppCompatActivity {
 
     private void loadData() {
         nameTV.setText(pokemon.getName());
-        typeTV.setText(pokemon.getType());
+        typeTV.setText("(" + pokemon.getType() + ")");
         defenseTV.setText(""+pokemon.getDefense());
         attackTV.setText(""+pokemon.getAttack());
         speedTV.setText(""+pokemon.getSpeed());
