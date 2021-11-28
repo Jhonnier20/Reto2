@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.example.reto2.databinding.ActivityPokemonDataBinding;
 import com.example.reto2.model.Pokemon;
 import com.example.reto2.model.Trainer;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class PokemonDataActivity extends AppCompatActivity {
 
@@ -51,7 +52,10 @@ public class PokemonDataActivity extends AppCompatActivity {
 
         loadData();
 
-        dropBtn.setOnClickListener(this::dropPokemon);
+        dropBtn.setOnClickListener( v -> {
+            FirebaseFirestore.getInstance().collection("users").document(trainer.getId()).collection("pokemones").document(pokemon.getId()).delete();
+            finish();
+        });
 
     }
 
