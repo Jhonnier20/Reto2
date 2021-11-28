@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void login(View view) {
         if(usernameET.getText().toString() == null || usernameET.getText().toString().equals("")) {
-            Toast.makeText(this, "No ha ingresado ningun usuario!", Toast.LENGTH_LONG);
+            Toast.makeText(this, "No ha ingresado ningun usuario!", Toast.LENGTH_LONG).show();
 
         } else {
 
@@ -52,20 +52,18 @@ public class MainActivity extends AppCompatActivity {
                     task -> {
                         if(task.getResult().size() == 0) {
                             FirebaseFirestore.getInstance().collection("trainers").document(trainer.getId()).set(trainer);
-                            Intent intent = new Intent(this, PokemonsActivity.class);
-                            intent.putExtra("trainer", trainer);
-                            startActivity(intent);
 
                         } else {
-                            Trainer trainerNew = null;
                             for (DocumentSnapshot doc: task.getResult()) {
-                                trainerNew = doc.toObject(Trainer.class);
+                                Trainer trainerNew = doc.toObject(Trainer.class);
+                                trainer.setId(trainerNew.getId());
+                                trainer.setName(trainerNew.getName());
                                 break;
                             }
-                            Intent intent = new Intent(this, PokemonsActivity.class);
-                            intent.putExtra("trainer", trainerNew);
-                            startActivity(intent);
                         }
+                        Intent intent = new Intent(this, PokemonsActivity.class);
+                        intent.putExtra("trainer", trainer);
+                        startActivity(intent);
                     }
             );
 

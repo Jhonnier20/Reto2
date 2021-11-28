@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Reto2">
         <activity
+            android:name=".PokemonDataActivity"
+            android:exported="true" />
+        <activity
             android:name=".PokemonsActivity"
             android:exported="true" />
         <activity
