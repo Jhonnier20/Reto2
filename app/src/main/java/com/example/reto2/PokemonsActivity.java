@@ -1,11 +1,13 @@
 package com.example.reto2;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,7 +25,7 @@ import com.google.gson.Gson;
 import java.util.Date;
 import java.util.UUID;
 
-public class PokemonsActivity extends AppCompatActivity implements PokemonAdapter.OnPokemonNewViewListener, PokemonDataActivity.OnDeletePokemonListener {
+public class PokemonsActivity extends AppCompatActivity implements PokemonAdapter.OnPokemonNewViewListener, PokemonAdapter.OnShowImage {
 
     private ActivityPokemonsBinding binding;
 
@@ -56,12 +58,13 @@ public class PokemonsActivity extends AppCompatActivity implements PokemonAdapte
         pokemonsRecycler.setLayoutManager(manager);
         adapter = new PokemonAdapter();
         adapter.setListener(this);
+        adapter.setImgListener(this);
         pokemonsRecycler.setAdapter(adapter);
         pokemonsRecycler.setHasFixedSize(true);
 
         catchPokBtn.setOnClickListener(this::searchPokApi);
         searchPokBtn.setOnClickListener(this::searchPokRecycler);
-
+        chargePokemons();
     }
 
     private void searchPokRecycler(View view) {
@@ -78,7 +81,7 @@ public class PokemonsActivity extends AppCompatActivity implements PokemonAdapte
                     } else {
                         runOnUiThread(
                                 () -> {
-                                   // adapter.deletePokemon();
+                                    adapter.deletePokemon();
                                 }
                         );
                         for (DocumentSnapshot doc : task.getResult()) {
@@ -89,7 +92,19 @@ public class PokemonsActivity extends AppCompatActivity implements PokemonAdapte
                 }
         );
     }
+    public void chargePokemons() {
+        Log.e(">>>",trainer.getId());
+        FirebaseFirestore.getInstance().collection("trainers").document(trainer.getId()).collection("pokemons").orderBy("dateCatch").get().addOnCompleteListener(
+                task -> {
+                    for (DocumentSnapshot doc : task.getResult()) {
 
+                        Pokemon pokemon = doc.toObject(Pokemon.class);
+                        Log.e(">>>", pokemon.toString());
+                        adapter.addPokemon(pokemon);
+                    }
+                }
+        );
+    }
     private void searchPokApi(View view) {
         /**Pokemon pokemon = new Pokemon(
                 UUID.randomUUID().toString(),
@@ -150,8 +165,13 @@ public class PokemonsActivity extends AppCompatActivity implements PokemonAdapte
         startActivity(intent);
     }
 
+
     @Override
-    public void onDeletePokemon(Pokemon p) {
-        adapter.deletePokemon(p);
+    public void onShowImage(Bitmap img, ImageView imgRow) {
+        runOnUiThread(
+                () -> {
+                    imgRow.setImageBitmap(img);
+                }
+        );
     }
 }
