@@ -4,15 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/containerback"
     tools:context=".PokemonsActivity">
 
     <EditText
         android:id="@+id/catchET"
+        style="@style/EditNameET"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="45dp"
         android:background="@drawable/edittextback"
         android:ems="10"
+        android:fontFamily="@font/roboto_medium"
         android:hint="@string/catchETHint"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,11 +24,13 @@
 
     <EditText
         android:id="@+id/searchET"
+        style="@style/EditNameET"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="32dp"
         android:background="@drawable/edittextback"
         android:ems="10"
+        android:fontFamily="@font/roboto_medium"
         android:hint="@string/searchETHint"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toStartOf="@+id/searchPokBtn"
@@ -35,9 +40,12 @@
 
     <Button
         android:id="@+id/catchPokBtn"
+        style="@style/ButtonMain"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
+        android:background="@drawable/buttonback"
+        android:fontFamily="@font/roboto_regular"
         android:text="@string/catchBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -46,9 +54,11 @@
 
     <TextView
         android:id="@+id/textView4"
+        style="@style/TitleMainApp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="64dp"
+        android:fontFamily="@font/roboto_bold"
         android:text="@string/myPokemonsTV"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -56,8 +66,10 @@
 
     <Button
         android:id="@+id/searchPokBtn"
+        style="@style/ButtonMain"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/buttonback"
         android:text=">"
         app:layout_constraintBottom_toBottomOf="@+id/searchET"
         app:layout_constraintEnd_toEndOf="parent"

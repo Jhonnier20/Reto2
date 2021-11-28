@@ -4,15 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/containerback"
     tools:context=".MainActivity">
 
     <EditText
         android:id="@+id/usernameET"
-        android:layout_width="wrap_content"
+        style="@style/EditNameET"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
         android:layout_marginTop="64dp"
+        android:layout_marginEnd="64dp"
         android:background="@drawable/edittextback"
         android:ems="10"
+        android:fontFamily="@font/roboto_regular"
         android:hint="@string/usernameETHint"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,9 +26,14 @@
 
     <Button
         android:id="@+id/loginBtn"
-        android:layout_width="wrap_content"
+        style="@style/ButtonMain"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
         android:layout_marginTop="64dp"
+        android:layout_marginEnd="64dp"
+        android:background="@drawable/buttonback"
+        android:fontFamily="@font/roboto_regular"
         android:text="@string/ingresarBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -31,9 +41,13 @@
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="wrap_content"
+        style="@style/SpecificationUserTV"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="110dp"
         android:layout_marginTop="263dp"
+        android:layout_marginEnd="110dp"
+        android:fontFamily="@font/roboto_medium"
         android:text="@string/usernameET"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -41,9 +55,11 @@
 
     <TextView
         android:id="@+id/textView2"
+        style="@style/TitleMainApp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="64dp"
+        android:fontFamily="@font/roboto_bold"
         android:text="@string/titleMain"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
