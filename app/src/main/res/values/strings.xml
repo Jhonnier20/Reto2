@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Reto2</string>
+
+    <string name="ingresarBtn">Ingresar</string>
+    <string name="usernameET">Nombre del usuario del entrenador Pokemon</string>
+    <string name="usernameETHint">Username</string>
+    <string name="titleMain">POKEDEX</string>
 </resources>

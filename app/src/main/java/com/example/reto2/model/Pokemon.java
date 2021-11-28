@@ -1,6 +1,8 @@
 package com.example.reto2.model;
 
-public class Pokemon {
+import java.io.Serializable;
+
+public class Pokemon implements Serializable {
 
     private String id;
     private String name;
